@@ -11,9 +11,9 @@ export default function Home() {
       <main className={styles.main}>
         <h1 className={styles.title}>Pas de smartphone avant le bac !</h1>
         <p className={styles.description}>
-         Protégeons nos enfants  d&apos;une exposition précoce aux smartphones. Ensemble, redonnons aux jeunes le goût du réel et des liens authentiques.
+         Protégeons nos enfants  d’une exposition précoce aux smartphones. Ensemble, redonnons aux jeunes le goût du réel et des liens authentiques.
         </p>
-        <a className={styles.rejoindre} href="mailto:contact@psab-asso.org">Rejoindre l d&apos;association</a>
+        <a className={styles.rejoindre} href="mailto:contact@psab-asso.org">Rejoindre l’association</a>
         <div  className={styles.chiffre}>
           <h2> Les chiffres clés</h2>
           <ul>
@@ -53,7 +53,7 @@ export default function Home() {
   C’est simple, c’est gratuit, c’est local… alors, on y va ?
 </p>
 
-  <a className={styles.rejoindre} href="mailto:contact@psab-asso.org">Rejoindre l d&apos;association</a>
+  <a className={styles.rejoindre} href="mailto:contact@psab-asso.org">Rejoindre l’association</a>
 </div>
  
        <div className={styles.ressources}>
