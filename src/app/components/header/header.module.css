@@ -1,42 +1,52 @@
-/* header.module.css */
 .header {
+	top: 0;
+	left: 0;
+	right: 0;
 	background: #000;
-	padding: 1rem 2rem;
 	color: #fff;
+	position: fixed;
+	z-index: 1000;
 }
 
 .container {
+	position: relative;
+	z-index: 2;
 	max-width: 1000px;
 	margin: 0 auto;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	background-color: #000;
+	padding: 1rem 2rem;
 }
 
 .logo {
-	font-size: 1.4rem;
+	font-size: 1.2rem;
 	font-weight: 700;
-	color: #ffd93d; /* accent jaune pastel */
+	color: #ffd93d; /* jaune pastel */
 	margin: 0;
 }
 
-.nav {
+/* ===== Nav Desktop ===== */
+.navDesktop {
 	display: flex;
 	gap: 1.5rem;
 }
 
-.nav a {
-	position: relative;
+.navDesktop a {
 	color: #fff;
 	text-decoration: none;
+	position: relative;
+	padding: 0 0.75rem;
 	transition: color 0.2s;
 }
 
-.nav a:hover {
-	color: #ffd93d; /* bleu pastel */
+.navDesktop a:hover {
+	color: #ffd93d;
 }
 
-.nav a:not(:last-child)::after {
+/* Barres bleues entre les liens */
+.navDesktop a:not(:last-child)::after {
 	content: '';
 	position: absolute;
 	right: -0.75rem;
@@ -44,5 +54,118 @@
 	transform: translateY(-50%);
 	height: 16px;
 	width: 2px;
-	background: #4a90e2; /* bleu des titres */
+	background: #4a90e2;
+}
+
+/* ===== Burger Button ===== */
+.burger {
+	display: none;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 24px;
+	height: 18px;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+}
+
+.burger span {
+	display: block;
+	height: 3px;
+	width: 100%;
+	background: #fff; /* barres blanches */
+	border-radius: 2px;
+	transition: all 0.3s ease;
+}
+
+.burger span:nth-child(1) {
+	transform: rotate(0);
+}
+.burger span:nth-child(2) {
+	opacity: 1;
+}
+.burger span:nth-child(3) {
+	transform: rotate(0);
+}
+
+.burger.open span:nth-child(1) {
+	transform: rotate(45deg) translate(5px, 5px);
+}
+.burger.open span:nth-child(2) {
+	opacity: 0;
+}
+.burger.open span:nth-child(3) {
+	transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* ===== Mobile Nav Panel ===== */
+.navMobile {
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	background: #000;
+	max-height: 0;
+	overflow: hidden;
+	transition: transform 0.3s ease-in-out;
+	gap: 1.5rem;
+	padding: 2rem 0 2rem 2rem;
+	justify-content: flex-start;
+	align-items: center;
+	transform: translateY(-100%);
+	z-index: 1;
+}
+
+.navMobile.open {
+	transform: translateY(0);
+}
+
+.navMobile a {
+	position: relative;
+	color: #fff;
+	font-size: 0.9rem;
+	text-decoration: none;
+}
+
+.navMobile a:hover {
+	color: #4a90e2;
+}
+
+.navMobile a:not(:last-child)::after {
+	content: '';
+	position: absolute;
+	right: -0.75rem;
+	top: 50%;
+	transform: translateY(-50%);
+	height: 16px;
+	width: 2px;
+	background: #4a90e2;
+}
+
+/* ===== Responsive Rules ===== */
+@media (max-width: 768px) {
+	.navMobile {
+		display: flex;
+	}
+
+	.burger {
+		display: flex;
+	}
+
+	/* Cache la nav desktop */
+	.navDesktop {
+		display: none;
+	}
+
+	.logo {
+		font-size: 1.2rem;
+	}
+}
+
+@media (max-width: 400px) {
+	.logo {
+		font-size: 1rem;
+	}
 }

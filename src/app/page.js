@@ -4,7 +4,7 @@ import styles from './page.module.css';
 export default function Home() {
 	return (
 		<>
-			<h2 className={styles.title}> Toujours plus loin des notifs...</h2>
+			<h2 className={styles.title}> Toujours plus loin des notifs</h2>
 			<p className={styles.description}>
 				Protégeons nos enfants d’une exposition précoce aux smartphones.
 				Ensemble, redonnons aux jeunes le goût du réel et des liens
