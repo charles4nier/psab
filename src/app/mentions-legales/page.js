@@ -3,10 +3,10 @@ import styles from './mentions.module.css';
 export default function MentionsLegales() {
 	return (
 		<>
-			<h1 className={styles.title}>Mentions légales</h1>
+			<h2 className={styles.title}>Mentions légales</h2>
 
 			<section className={styles.section}>
-				<h2>Éditeur du site</h2>
+				<h3>Éditeur du site</h3>
 				<p>
 					Association{' '}
 					<strong>Pas de Smartphone Avant le Bac !</strong> (PSAB)
@@ -21,7 +21,7 @@ export default function MentionsLegales() {
 			</section>
 
 			<section className={styles.section}>
-				<h2>Responsable de publication</h2>
+				<h3>Responsable de publication</h3>
 				<p>
 					Président de l’association :{' '}
 					<strong>Charles Fournier</strong>
@@ -29,7 +29,7 @@ export default function MentionsLegales() {
 			</section>
 
 			<section className={styles.section}>
-				<h2>Hébergement</h2>
+				<h3>Hébergement</h3>
 				<p>
 					Ce site est hébergé par <strong>Vercel Inc.</strong>
 					<br />
@@ -46,7 +46,7 @@ export default function MentionsLegales() {
 			</section>
 
 			<section className={styles.section}>
-				<h2>Données personnelles</h2>
+				<h3>Données personnelles</h3>
 				<p>
 					Les informations collectées via le formulaire de contact
 					sont utilisées uniquement pour répondre à vos demandes.
@@ -61,7 +61,7 @@ export default function MentionsLegales() {
 			</section>
 
 			<section className={styles.section}>
-				<h2>Propriété intellectuelle</h2>
+				<h3>Propriété intellectuelle</h3>
 				<p>
 					Le contenu de ce site (textes, images, illustrations) est la
 					propriété exclusive de l’association PSAB. Toute

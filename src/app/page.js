@@ -4,7 +4,7 @@ import styles from './page.module.css';
 export default function Home() {
 	return (
 		<>
-			<h1 className={styles.title}>Pas de smartphone avant le bac !</h1>
+			<h2 className={styles.title}> Toujours plus loin des notifs...</h2>
 			<p className={styles.description}>
 				Protégeons nos enfants d’une exposition précoce aux smartphones.
 				Ensemble, redonnons aux jeunes le goût du réel et des liens
@@ -13,8 +13,8 @@ export default function Home() {
 			<Link className={styles.rejoindre} href="/contact">
 				Rejoindre l’association
 			</Link>
-			<div className={styles.chiffre}>
-				<h2> Les chiffres clés</h2>
+			<section className={styles.chiffre}>
+				<h3> Les chiffres clés</h3>
 				<ul>
 					<li>
 						<span className={styles.warning}>1 jeune sur 5</span>{' '}
@@ -56,9 +56,9 @@ export default function Home() {
 						cyberharcèlement via smartphone. (EU Kids Online, 2009)
 					</li>
 				</ul>
-			</div>
-			<div className={styles.manifeste}>
-				<h2>Notre manifeste</h2>
+			</section>
+			<section className={styles.manifeste}>
+				<h3>Notre manifeste</h3>
 				<p>
 					Retarder l’accès au smartphone, c’est offrir à nos enfants
 					une enfance plus libre, plus réelle. Nous unissons les
@@ -77,10 +77,10 @@ export default function Home() {
 						attention et leur bien-être.
 					</li>
 				</ul>
-			</div>
+			</section>
 
-			<div className={styles.objectif}>
-				<h2>Notre objectif</h2>
+			<section className={styles.objectif}>
+				<h3>Notre objectif</h3>
 				<p>
 					Nous sommes une initiative locale, née à Aurillac. Notre
 					démarche est simple : montrer aux familles qu’elles ne sont
@@ -100,10 +100,10 @@ export default function Home() {
 				<Link className={styles.rejoindre} href="/contact">
 					Rejoindre l’association
 				</Link>
-			</div>
+			</section>
 
-			<div className={styles.ressources}>
-				<h2>Ressources utiles</h2>
+			<section className={styles.ressources}>
+				<h3>Ressources utiles</h3>
 				<ul>
 					<li>
 						<a
@@ -317,7 +317,7 @@ export default function Home() {
 						</a>
 					</li>
 				</ul>
-			</div>
+			</section>
 		</>
 	);
 }

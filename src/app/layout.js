@@ -2,7 +2,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import styles from './page.module.css';
 import Image from 'next/image';
-import Link from 'next/link';
+import Header from './components/header';
 import Footer from './components/footer';
 
 const geistSans = Geist({
@@ -33,14 +33,15 @@ export default function RootLayout({ children }) {
 		<html lang="en">
 			<body className={`${geistSans.variable} ${geistMono.variable}`}>
 				<div className={styles.page}>
-					<header className={styles.banner}>
+					<Header />
+					<div className={styles.banner}>
 						<Image
 							src="/park-scene.png"
 							alt="Scène joyeuse"
 							width={1600}
 							height={600}
 						/>
-					</header>
+					</div>
 					<main className={styles.main}>{children}</main>
 				</div>
 				<Footer />

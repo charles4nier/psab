@@ -1,20 +1,19 @@
 import Link from 'next/link';
-import styles from './footer.module.css';
+import styles from './header.module.css';
 
-export default function Footer() {
+export default function Header() {
 	return (
-		<footer className={styles.footer}>
+		<header className={styles.header}>
 			<div className={styles.container}>
-				<p className={styles.copyright}>
-					© {new Date().getFullYear()}{' '}
-					<span>Pas de smartphone avant le bac !</span> — Aurillac
-				</p>
+				<h1 className={styles.logo}>
+					Pas de smartphone avant le bac !
+				</h1>
 				<nav className={styles.nav}>
 					<Link href="/">Accueil</Link>
 					<Link href="/contact">Contact</Link>
 					<Link href="/mentions-legales">Mentions légales</Link>
 				</nav>
 			</div>
-		</footer>
+		</header>
 	);
 }

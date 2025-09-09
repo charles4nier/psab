@@ -4,7 +4,7 @@ import styles from './page.module.css';
 export default function ContactPage() {
 	return (
 		<>
-			<h1 className={styles.title}>Contact</h1>
+			<h2 className={styles.title}>Contact</h2>
 			<p className={styles.description}>
 				Vous avez une question, une suggestion ou souhaitez rejoindre
 				l’association ? Écrivez-nous !
