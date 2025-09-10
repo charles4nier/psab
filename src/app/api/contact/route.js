@@ -10,6 +10,17 @@ export async function POST(req) {
 		const email = formData.get('email');
 		const phone = formData.get('phone');
 
+		console.log('✅ GOOGLE_CLIENT_EMAIL:', process.env.GOOGLE_CLIENT_EMAIL);
+		console.log('✅ GOOGLE_SHEET_ID:', process.env.GOOGLE_SHEET_ID);
+		console.log(
+			'✅ PRIVATE_KEY starts with:',
+			process.env.GOOGLE_PRIVATE_KEY?.substring(0, 30)
+		);
+		console.log(
+			'✅ PRIVATE_KEY length:',
+			process.env.GOOGLE_PRIVATE_KEY?.length
+		);
+
 		const auth = new google.auth.GoogleAuth({
 			credentials: {
 				client_email: process.env.GOOGLE_CLIENT_EMAIL,
@@ -104,11 +115,17 @@ export async function POST(req) {
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
-		console.error('❌ Erreur API Contact:', error);
+		console.error('❌ Erreur API Contact:', {
+			message: error.message,
+			code: error.code,
+			errors: error.errors,
+			response: error.response?.data
+		});
+
 		return NextResponse.json(
 			{
 				success: false,
-				error: 'Une erreur est survenue. Merci de réessayer plus tard.'
+				error: error.message || 'Erreur inconnue'
 			},
 			{ status: 500 }
 		);
