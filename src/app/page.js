@@ -10,7 +10,7 @@ export default function Home() {
 				Ensemble, redonnons aux jeunes le goût du réel et des liens
 				authentiques.
 			</p>
-			<Link className={styles.rejoindre} href="/contact">
+			<Link className={styles.rejoindre} href="/contact?type=inscription">
 				Rejoindre l’association
 			</Link>
 			<section className={styles.chiffre}>
@@ -97,7 +97,10 @@ export default function Home() {
 					gratuit, c’est local… alors, on y va ?
 				</p>
 
-				<Link className={styles.rejoindre} href="/contact">
+				<Link
+					className={styles.rejoindre}
+					href="/contact?type=inscription"
+				>
 					Rejoindre l’association
 				</Link>
 			</section>
