@@ -126,8 +126,22 @@ export default function ContactPage() {
 				{type === 'autre' && (
 					<>
 						<div className={styles.field}>
-							<label htmlFor="name">Nom</label>
-							<input type="text" id="name" name="name" required />
+							<label htmlFor="lastname">Nom</label>
+							<input
+								type="text"
+								id="lastname"
+								name="lastname"
+								required
+							/>
+						</div>
+						<div className={styles.field}>
+							<label htmlFor="firstname">Prénom</label>
+							<input
+								type="text"
+								id="firstname"
+								name="firstname"
+								required
+							/>
 						</div>
 						<div className={styles.field}>
 							<label htmlFor="email">Email</label>
@@ -135,6 +149,15 @@ export default function ContactPage() {
 								type="email"
 								id="email"
 								name="email"
+								required
+							/>
+						</div>
+						<div className={styles.field}>
+							<label htmlFor="objet">Objet</label>
+							<textarea
+								id="objet"
+								name="objet"
+								rows="1"
 								required
 							/>
 						</div>

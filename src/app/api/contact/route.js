@@ -9,17 +9,8 @@ export async function POST(req) {
 		const firstname = formData.get('firstname');
 		const email = formData.get('email');
 		const phone = formData.get('phone');
-
-		console.log('✅ GOOGLE_CLIENT_EMAIL:', process.env.GOOGLE_CLIENT_EMAIL);
-		console.log('✅ GOOGLE_SHEET_ID:', process.env.GOOGLE_SHEET_ID);
-		console.log(
-			'✅ PRIVATE_KEY starts with:',
-			process.env.GOOGLE_PRIVATE_KEY?.substring(0, 30)
-		);
-		console.log(
-			'✅ PRIVATE_KEY length:',
-			process.env.GOOGLE_PRIVATE_KEY?.length
-		);
+		const objet = formData.get('objet');
+		const message = formData.get('message');
 
 		const auth = new google.auth.GoogleAuth({
 			credentials: {
@@ -35,7 +26,7 @@ export async function POST(req) {
 		if (type === 'inscription') {
 			const res = await sheets.spreadsheets.values.get({
 				spreadsheetId: process.env.GOOGLE_SHEET_ID,
-				range: 'Feuille 1!A:E'
+				range: 'Adhérents!A:E'
 			});
 
 			const rows = res.data.values || [];
@@ -53,7 +44,7 @@ export async function POST(req) {
 
 			await sheets.spreadsheets.values.append({
 				spreadsheetId: process.env.GOOGLE_SHEET_ID,
-				range: 'Feuille 1!A:E',
+				range: 'Adhérents!A:E',
 				valueInputOption: 'USER_ENTERED',
 				requestBody: {
 					values: [
@@ -72,7 +63,7 @@ export async function POST(req) {
 		if (type === 'desabonnement') {
 			const res = await sheets.spreadsheets.values.get({
 				spreadsheetId: process.env.GOOGLE_SHEET_ID,
-				range: 'Feuille 1!A:E'
+				range: 'Adhérents!A:E'
 			});
 
 			const rows = res.data.values || [];
@@ -108,6 +99,26 @@ export async function POST(req) {
 								}
 							}
 						}
+					]
+				}
+			});
+		}
+
+		if (type === 'autre') {
+			await sheets.spreadsheets.values.append({
+				spreadsheetId: process.env.GOOGLE_SHEET_ID,
+				range: 'Messages!A:F', // A → G car tu as 7 colonnes
+				valueInputOption: 'USER_ENTERED',
+				requestBody: {
+					values: [
+						[
+							lastname,
+							firstname,
+							email,
+							new Date().toISOString(),
+							objet,
+							message
+						]
 					]
 				}
 			});
