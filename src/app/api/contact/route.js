@@ -12,25 +12,33 @@ export async function POST(req) {
 		const objet = formData.get('objet');
 		const message = formData.get('message');
 
-		const auth = new google.auth.GoogleAuth({
-			credentials: {
-				client_email: process.env.GOOGLE_CLIENT_EMAIL,
-				private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\n/g, '\n')
-			},
-			scopes: ['https://www.googleapis.com/auth/spreadsheets']
-		});
-
-		const sheets = google.sheets({ version: 'v4', auth });
-
-		// ✅ Cas INSCRIPTION
+		// ✅ Cas INSCRIPTION → envoi direct au Google Form
 		if (type === 'inscription') {
+			// 🔎 Vérif doublon
+			const auth = new google.auth.GoogleAuth({
+				credentials: {
+					client_email: process.env.GOOGLE_CLIENT_EMAIL,
+					private_key: process.env.GOOGLE_PRIVATE_KEY.replace(
+						/\\n/g,
+						'\n'
+					)
+				},
+				scopes: ['https://www.googleapis.com/auth/spreadsheets']
+			});
+
+			const sheets = google.sheets({ version: 'v4', auth });
 			const res = await sheets.spreadsheets.values.get({
 				spreadsheetId: process.env.GOOGLE_SHEET_ID,
-				range: 'Adhérents!A:E'
+				range: 'Adhérents!A:Z' // ⚠️ adapte avec le nom de ton onglet lié au Form
 			});
 
 			const rows = res.data.values || [];
-			const emailExists = rows.some((row) => row[2] === email);
+			const header = rows[0];
+			const emailColIndex = header.indexOf('Email'); // repère la bonne colonne
+			console.log('emailColIndex', emailColIndex);
+			const emailExists = rows.some(
+				(row, i) => i > 0 && row[emailColIndex] === email
+			);
 
 			if (emailExists) {
 				return NextResponse.json(
@@ -42,33 +50,64 @@ export async function POST(req) {
 				);
 			}
 
-			await sheets.spreadsheets.values.append({
-				spreadsheetId: process.env.GOOGLE_SHEET_ID,
-				range: 'Adhérents!A:E',
-				valueInputOption: 'USER_ENTERED',
-				requestBody: {
-					values: [
-						[
-							lastname,
-							firstname,
-							email,
-							phone,
-							new Date().toISOString()
-						]
-					]
-				}
+			const formUrl =
+				'https://docs.google.com/forms/d/e/1FAIpQLSemXL39Q_6w0A3No6Nht1LsFxXHbO-oNI9zAOUgyBahegqsuw/formResponse';
+
+			const googleFormData = new URLSearchParams();
+			googleFormData.append('entry.1854316130', lastname); // Nom
+			googleFormData.append('entry.510206026', firstname); // Prénom
+			googleFormData.append('entry.1287184825', email); // Email
+			googleFormData.append('entry.1991256907', phone); // Téléphone
+
+			// Champ libre ou info supplémentaire
+			googleFormData.append(
+				'entry.1676041714',
+				'Nouvelle inscription via site'
+			);
+
+			// Date du jour
+			const date = new Date();
+			googleFormData.append('entry.1262389809_year', date.getFullYear());
+			googleFormData.append(
+				'entry.1262389809_month',
+				date.getMonth() + 1
+			);
+			googleFormData.append('entry.1262389809_day', date.getDate());
+
+			await fetch(formUrl, {
+				method: 'POST',
+				body: googleFormData,
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+			});
+
+			return NextResponse.json({
+				success: true,
+				message: '✅ Inscription envoyée via Google Form'
 			});
 		}
 
-		if (type === 'desabonnement') {
+		// ✅ Cas DESINSCRIPTION → suppression dans l’onglet Adhérents
+		if (type === 'desinscription') {
+			const auth = new google.auth.GoogleAuth({
+				credentials: {
+					client_email: process.env.GOOGLE_CLIENT_EMAIL,
+					private_key: process.env.GOOGLE_PRIVATE_KEY.replace(
+						/\n/g,
+						'\n'
+					)
+				},
+				scopes: ['https://www.googleapis.com/auth/spreadsheets']
+			});
+
+			const sheets = google.sheets({ version: 'v4', auth });
 			const res = await sheets.spreadsheets.values.get({
 				spreadsheetId: process.env.GOOGLE_SHEET_ID,
 				range: 'Adhérents!A:E'
 			});
 
 			const rows = res.data.values || [];
-			const rowIndex = rows.findIndex((row) => row[2] === email); // colonne B = email
-			console.log('Rows:', rows);
+			const rowIndex = rows.findIndex((row) => row[3] === email); // colonne D = email
+
 			if (rowIndex === -1) {
 				return NextResponse.json(
 					{
@@ -79,12 +118,6 @@ export async function POST(req) {
 				);
 			}
 
-			// ⚠️ rowIndex correspond à l’index du tableau `rows`
-			// mais dans Google Sheets : ligne 1 = index 0
-			// donc si tu as une ligne d’en-tête → il faut sauter la 1ʳᵉ ligne
-			const targetIndex = rowIndex; // si pas d’en-tête
-			// const targetIndex = rowIndex; // si ta ligne 1 est déjà incluse dans rows (à vérifier avec console.log)
-
 			await sheets.spreadsheets.batchUpdate({
 				spreadsheetId: process.env.GOOGLE_SHEET_ID,
 				requestBody: {
@@ -92,22 +125,40 @@ export async function POST(req) {
 						{
 							deleteDimension: {
 								range: {
-									sheetId: 0, // ton gid
+									sheetId: 1677149546, // GID de l’onglet Adhérents
 									dimension: 'ROWS',
-									startIndex: targetIndex,
-									endIndex: targetIndex + 1
+									startIndex: rowIndex,
+									endIndex: rowIndex + 1
 								}
 							}
 						}
 					]
 				}
 			});
+
+			return NextResponse.json({
+				success: true,
+				message: '✅ Désinscription effectuée'
+			});
 		}
 
+		// ✅ Cas AUTRE → écriture dans onglet Messages
 		if (type === 'autre') {
+			const auth = new google.auth.GoogleAuth({
+				credentials: {
+					client_email: process.env.GOOGLE_CLIENT_EMAIL,
+					private_key: process.env.GOOGLE_PRIVATE_KEY.replace(
+						/\n/g,
+						'\n'
+					)
+				},
+				scopes: ['https://www.googleapis.com/auth/spreadsheets']
+			});
+
+			const sheets = google.sheets({ version: 'v4', auth });
 			await sheets.spreadsheets.values.append({
 				spreadsheetId: process.env.GOOGLE_SHEET_ID,
-				range: 'Messages!A:F', // A → G car tu as 7 colonnes
+				range: 'Messages!A:F',
 				valueInputOption: 'USER_ENTERED',
 				requestBody: {
 					values: [
@@ -122,9 +173,17 @@ export async function POST(req) {
 					]
 				}
 			});
+
+			return NextResponse.json({
+				success: true,
+				message: '✅ Message enregistré'
+			});
 		}
 
-		return NextResponse.json({ success: true });
+		return NextResponse.json(
+			{ success: false, error: '❌ Type de formulaire inconnu' },
+			{ status: 400 }
+		);
 	} catch (error) {
 		console.error('❌ Erreur API Contact:', {
 			message: error.message,
@@ -134,10 +193,7 @@ export async function POST(req) {
 		});
 
 		return NextResponse.json(
-			{
-				success: false,
-				error: error.message || 'Erreur inconnue'
-			},
+			{ success: false, error: error.message || 'Erreur inconnue' },
 			{ status: 500 }
 		);
 	}

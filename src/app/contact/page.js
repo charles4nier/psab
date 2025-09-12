@@ -74,7 +74,7 @@ export default function ContactPage() {
 						onChange={(e) => setType(e.target.value)}
 					>
 						<option value="inscription">Inscription</option>
-						<option value="desabonnement">Désabonnement</option>
+						<option value="desinscription">Désinscription</option>
 						<option value="autre">Autre</option>
 					</select>
 				</div>
@@ -116,7 +116,7 @@ export default function ContactPage() {
 					</>
 				)}
 
-				{type === 'desabonnement' && (
+				{type === 'desinscription' && (
 					<div className={styles.field}>
 						<label htmlFor="email">Email</label>
 						<input type="email" id="email" name="email" required />
